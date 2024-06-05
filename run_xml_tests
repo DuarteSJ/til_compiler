@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Directories containing the tests
+TEST_DIR="../co24/auto-tests"
+EXPECTED_DIR="$TEST_DIR/expected"
+
+# Remove all .diff and .out files from previous run
+rm "$TEST_DIR"/*.diff
+rm "$TEST_DIR"/*.out
+
+# Initialize counters
+total_tests=0
+passed_tests=0
+
+# for each .til file in the specified directory
+for file in "$TEST_DIR"/*.til
+do
+  # strip the file extension
+  base_name="${file%.*}"
+  expected_file="$EXPECTED_DIR/$(basename $base_name).out"
+
+  # run the commands
+  ./til --target asm "$file"
+  yasm -felf32 -o "$base_name.o" "$base_name.asm"
+  ld -melf_i386 -o "$base_name" "$base_name.o" -lrts -L /home/DuarteSJ/compiladores/usr/lib
+  # run the program, capture its output, and write it to a file
+  "$base_name" > "$base_name.out"
+
+  # compare the output with the expected output ignoring whitespaces and newlines
+  if diff -wq <(tr '\n' ' ' < "$base_name.out") <(tr '\n' ' ' < "$expected_file") >/dev/null; then
+    ((passed_tests++))
+    #remve the .asm file
+    #rm "$base_name.asm"
+  else
+    diff -w <(tr '\n' ' ' < "$base_name.out") <(tr '\n' ' ' < "$expected_file") > "$base_name.diff"
+  fi
+
+  # remove the .o files
+  rm "$base_name.o" "$base_name"
+
+  ((total_tests++))
+done
+
+echo "Passed $passed_tests out of $total_tests tests."

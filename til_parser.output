@@ -1,0 +1,3466 @@
+Terminals unused in grammar
+
+    tYPE_DOUBLE
+    tPRIVATE
+    tIFX
+    tELSE
+
+
+Grammar
+
+    0 $accept: file $end
+
+    1 file: ε
+    2     | global_declarations
+    3     | main
+    4     | global_declarations main
+
+    5 main: '(' tPROGRAM block_content ')'
+
+    6 global_declarations: global_declaration
+    7                    | global_declarations global_declaration
+
+    8 global_declaration: '(' tPUBLIC var_type tIDENTIFIER opt_global_init ')'
+    9                   | '(' tPUBLIC var tIDENTIFIER global_init ')'
+   10                   | '(' tPUBLIC tIDENTIFIER global_init ')'
+   11                   | '(' tFORWARD var_type tIDENTIFIER ')'
+   12                   | '(' tEXTERNAL fun_type tIDENTIFIER ')'
+   13                   | '(' var_type tIDENTIFIER opt_global_init ')'
+   14                   | '(' var tIDENTIFIER global_init ')'
+   15                   | '(' tIDENTIFIER global_init ')'
+
+   16 opt_global_init: ε
+   17                | global_init
+
+   18 global_init: literal
+   19            | fundef
+
+   20 opt_init: ε
+   21         | expr
+
+   22 var: tVAR
+
+   23 block: '(' tBLOCK block_content ')'
+
+   24 block_content: declarations instrs
+   25              | declarations
+   26              | instrs
+   27              | ε
+
+   28 declarations: declaration
+   29             | declarations declaration
+
+   30 declaration: '(' var_type tIDENTIFIER opt_init ')'
+   31            | '(' var tIDENTIFIER expr ')'
+
+   32 instrs: instr
+   33       | instrs instr
+
+   34 instr: block
+   35      | expr
+   36      | '(' tIF expr instr ')'
+   37      | '(' tIF expr instr instr ')'
+   38      | '(' tLOOP expr instr ')'
+   39      | '(' tSTOP ')'
+   40      | '(' tSTOP tINTEGER ')'
+   41      | '(' tNEXT ')'
+   42      | '(' tNEXT tINTEGER ')'
+   43      | '(' tRETURN ')'
+   44      | '(' tRETURN expr ')'
+   45      | '(' tPRINT exprs ')'
+   46      | '(' tPRINTLN exprs ')'
+   47      | '(' tCHANGE expr tARROW expr tWITH expr tDOTS expr ')'
+   48      | '(' tWITH expr expr expr expr ')'
+   49      | '(' tUNLESS expr tFOR expr tDO expr tAPPLY expr ')'
+   50      | '(' tSWEEP expr tARROW expr tDOTS expr tWITH expr tIF expr ')'
+
+   51 opt_exprs: ε
+   52          | exprs
+
+   53 exprs: expr
+   54      | exprs expr
+
+   55 expr: literal
+   56     | '(' '-' expr ')'
+   57     | '(' '+' expr ')'
+   58     | '(' '+' expr expr ')'
+   59     | '(' '-' expr expr ')'
+   60     | '(' tFIND lval ')'
+   61     | '(' '*' expr expr ')'
+   62     | '(' '/' expr expr ')'
+   63     | '(' '%' expr expr ')'
+   64     | '(' '<' expr expr ')'
+   65     | '(' '>' expr expr ')'
+   66     | '(' tGE expr expr ')'
+   67     | '(' tLE expr expr ')'
+   68     | '(' tNE expr expr ')'
+   69     | '(' tEQ expr expr ')'
+   70     | '(' '~' expr ')'
+   71     | '(' tAND expr expr ')'
+   72     | '(' tOR expr expr ')'
+   73     | '(' tREAD ')'
+   74     | '(' tSET lval expr ')'
+   75     | '(' tOBJECTS expr ')'
+   76     | '(' tSIZEOF expr ')'
+   77     | lval
+   78     | fundef
+   79     | '(' tAT opt_exprs ')'
+   80     | '(' expr opt_exprs ')'
+
+   81 fundef: '(' tFUNCTION '(' return_type opt_args ')' block_content ')'
+
+   82 data_type: tTYPE_STRING
+   83          | tTYPE_INT
+   84          | tTYPE_DOUBLE
+   85          | fun_type
+   86          | data_type '!'
+
+   87 fun_type: '(' return_type '(' var_types ')' ')'
+   88         | '(' return_type ')'
+
+   89 return_type: var_type
+   90            | void_type
+
+   91 opt_args: ε
+   92         | args
+
+   93 args: arg
+   94     | args arg
+
+   95 arg: '(' var_type tIDENTIFIER ')'
+
+   96 var_types: var_type
+   97          | var_types var_type
+
+   98 var_type: data_type
+   99         | void_pointer
+
+  100 void_pointer: void_pointer '!'
+  101             | void_type '!'
+
+  102 void_type: tTYPE_VOID
+
+  103 literal: tINTEGER
+  104        | tDOUBLE
+  105        | tSTRING
+  106        | tNULLPTR
+
+  107 lval: tIDENTIFIER
+  108     | '(' tINDEX expr expr ')'
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '!' (33) 86 100 101
+    '%' (37) 63
+    '(' (40) 5 8 9 10 11 12 13 14 15 23 30 31 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 79 80 81 87 88 95 108
+    ')' (41) 5 8 9 10 11 12 13 14 15 23 30 31 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 79 80 81 87 88 95 108
+    '*' (42) 61
+    '+' (43) 57 58
+    '-' (45) 56 59
+    '/' (47) 62
+    '<' (60) 64
+    '>' (62) 65
+    '~' (126) 70
+    error (256)
+    tINTEGER <i> (258) 40 42 103
+    tDOUBLE <d> (259) 104
+    tIDENTIFIER <s> (260) 8 9 10 11 12 13 14 15 30 31 95 107
+    tSTRING <s> (261) 105
+    tLOOP (262) 38
+    tIF (263) 36 37 50
+    tPRINT (264) 45
+    tREAD (265) 73
+    tPROGRAM (266) 5
+    tSET (267) 74
+    tTYPE_INT (268) 83
+    tYPE_DOUBLE (269)
+    tTYPE_STRING (270) 82
+    tAT (271) 79
+    tTYPE_VOID (272) 102
+    tEXTERNAL (273) 12
+    tTYPE_DOUBLE (274) 84
+    tNULLPTR (275) 106
+    tFORWARD (276) 11
+    tPUBLIC (277) 8 9 10
+    tVAR (278) 22
+    tBLOCK (279) 23
+    tSTOP (280) 39 40
+    tWITH (281) 47 48 50
+    tNEXT (282) 41 42
+    tRETURN (283) 43 44
+    tPRINTLN (284) 46
+    tAND (285) 71
+    tOR (286) 72
+    tFIND (287) 60
+    tINDEX (288) 108
+    tOBJECTS (289) 75
+    tSIZEOF (290) 76
+    tFUNCTION (291) 81
+    tPRIVATE (292)
+    tUNLESS (293) 49
+    tDO (294) 49
+    tFOR (295) 49
+    tAPPLY (296) 49
+    tDOTS (297) 47 50
+    tARROW (298) 47 50
+    tSWEEP (299) 50
+    tCHANGE (300) 47
+    tIFX (301)
+    tELSE (302)
+    tGE (303) 66
+    tLE (304) 67
+    tEQ (305) 69
+    tNE (306) 68
+
+
+Nonterminals, with rules where they appear
+
+    $accept (63)
+        on left: 0
+    file <sequence> (64)
+        on left: 1 2 3 4
+        on right: 0
+    main <node> (65)
+        on left: 5
+        on right: 3 4
+    global_declarations <sequence> (66)
+        on left: 6 7
+        on right: 2 4 7
+    global_declaration <node> (67)
+        on left: 8 9 10 11 12 13 14 15
+        on right: 6 7
+    opt_global_init <expression> (68)
+        on left: 16 17
+        on right: 8 13
+    global_init <expression> (69)
+        on left: 18 19
+        on right: 9 10 14 15 17
+    opt_init <expression> (70)
+        on left: 20 21
+        on right: 30
+    var <type> (71)
+        on left: 22
+        on right: 9 14 31
+    block <block> (72)
+        on left: 23
+        on right: 34
+    block_content <block> (73)
+        on left: 24 25 26 27
+        on right: 5 23 81
+    declarations <sequence> (74)
+        on left: 28 29
+        on right: 24 25 29
+    declaration <node> (75)
+        on left: 30 31
+        on right: 28 29
+    instrs <sequence> (76)
+        on left: 32 33
+        on right: 24 26 33
+    instr <node> (77)
+        on left: 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
+        on right: 32 33 36 37 38
+    opt_exprs <sequence> (78)
+        on left: 51 52
+        on right: 79 80
+    exprs <sequence> (79)
+        on left: 53 54
+        on right: 45 46 52 54
+    expr <expression> (80)
+        on left: 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80
+        on right: 21 31 35 36 37 38 44 47 48 49 50 53 54 56 57 58 59 61 62 63 64 65 66 67 68 69 70 71 72 74 75 76 80 108
+    fundef <expression> (81)
+        on left: 81
+        on right: 19 78
+    data_type <type> (82)
+        on left: 82 83 84 85 86
+        on right: 86 98
+    fun_type <type> (83)
+        on left: 87 88
+        on right: 12 85
+    return_type <type> (84)
+        on left: 89 90
+        on right: 81 87 88
+    opt_args <sequence> (85)
+        on left: 91 92
+        on right: 81
+    args <sequence> (86)
+        on left: 93 94
+        on right: 92 94
+    arg <node> (87)
+        on left: 95
+        on right: 93 94
+    var_types <types> (88)
+        on left: 96 97
+        on right: 87 97
+    var_type <type> (89)
+        on left: 98 99
+        on right: 8 11 13 30 89 95 96 97
+    void_pointer <type> (90)
+        on left: 100 101
+        on right: 99 100
+    void_type <type> (91)
+        on left: 102
+        on right: 90 101
+    literal <expression> (92)
+        on left: 103 104 105 106
+        on right: 18 55
+    lval <lvalue> (93)
+        on left: 107 108
+        on right: 60 74 77
+
+
+State 0
+
+    0 $accept: • file $end
+
+    '('  shift, and go to state 1
+
+    $default  reduce using rule 1 (file)
+
+    file                 go to state 2
+    main                 go to state 3
+    global_declarations  go to state 4
+    global_declaration   go to state 5
+
+
+State 1
+
+    5 main: '(' • tPROGRAM block_content ')'
+    8 global_declaration: '(' • tPUBLIC var_type tIDENTIFIER opt_global_init ')'
+    9                   | '(' • tPUBLIC var tIDENTIFIER global_init ')'
+   10                   | '(' • tPUBLIC tIDENTIFIER global_init ')'
+   11                   | '(' • tFORWARD var_type tIDENTIFIER ')'
+   12                   | '(' • tEXTERNAL fun_type tIDENTIFIER ')'
+   13                   | '(' • var_type tIDENTIFIER opt_global_init ')'
+   14                   | '(' • var tIDENTIFIER global_init ')'
+   15                   | '(' • tIDENTIFIER global_init ')'
+
+    tIDENTIFIER   shift, and go to state 6
+    tPROGRAM      shift, and go to state 7
+    tTYPE_INT     shift, and go to state 8
+    tTYPE_STRING  shift, and go to state 9
+    tTYPE_VOID    shift, and go to state 10
+    tEXTERNAL     shift, and go to state 11
+    tTYPE_DOUBLE  shift, and go to state 12
+    tFORWARD      shift, and go to state 13
+    tPUBLIC       shift, and go to state 14
+    tVAR          shift, and go to state 15
+    '('           shift, and go to state 16
+
+    var           go to state 17
+    data_type     go to state 18
+    fun_type      go to state 19
+    var_type      go to state 20
+    void_pointer  go to state 21
+    void_type     go to state 22
+
+
+State 2
+
+    0 $accept: file • $end
+
+    $end  shift, and go to state 23
+
+
+State 3
+
+    3 file: main •
+
+    $default  reduce using rule 3 (file)
+
+
+State 4
+
+    2 file: global_declarations •
+    4     | global_declarations • main
+    7 global_declarations: global_declarations • global_declaration
+
+    '('  shift, and go to state 1
+
+    $default  reduce using rule 2 (file)
+
+    main                go to state 24
+    global_declaration  go to state 25
+
+
+State 5
+
+    6 global_declarations: global_declaration •
+
+    $default  reduce using rule 6 (global_declarations)
+
+
+State 6
+
+   15 global_declaration: '(' tIDENTIFIER • global_init ')'
+
+    tINTEGER  shift, and go to state 26
+    tDOUBLE   shift, and go to state 27
+    tSTRING   shift, and go to state 28
+    tNULLPTR  shift, and go to state 29
+    '('       shift, and go to state 30
+
+    global_init  go to state 31
+    fundef       go to state 32
+    literal      go to state 33
+
+
+State 7
+
+    5 main: '(' tPROGRAM • block_content ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 35
+
+    $default  reduce using rule 27 (block_content)
+
+    block          go to state 36
+    block_content  go to state 37
+    declarations   go to state 38
+    declaration    go to state 39
+    instrs         go to state 40
+    instr          go to state 41
+    expr           go to state 42
+    fundef         go to state 43
+    literal        go to state 44
+    lval           go to state 45
+
+
+State 8
+
+   83 data_type: tTYPE_INT •
+
+    $default  reduce using rule 83 (data_type)
+
+
+State 9
+
+   82 data_type: tTYPE_STRING •
+
+    $default  reduce using rule 82 (data_type)
+
+
+State 10
+
+  102 void_type: tTYPE_VOID •
+
+    $default  reduce using rule 102 (void_type)
+
+
+State 11
+
+   12 global_declaration: '(' tEXTERNAL • fun_type tIDENTIFIER ')'
+
+    '('  shift, and go to state 16
+
+    fun_type  go to state 46
+
+
+State 12
+
+   84 data_type: tTYPE_DOUBLE •
+
+    $default  reduce using rule 84 (data_type)
+
+
+State 13
+
+   11 global_declaration: '(' tFORWARD • var_type tIDENTIFIER ')'
+
+    tTYPE_INT     shift, and go to state 8
+    tTYPE_STRING  shift, and go to state 9
+    tTYPE_VOID    shift, and go to state 10
+    tTYPE_DOUBLE  shift, and go to state 12
+    '('           shift, and go to state 16
+
+    data_type     go to state 18
+    fun_type      go to state 19
+    var_type      go to state 47
+    void_pointer  go to state 21
+    void_type     go to state 22
+
+
+State 14
+
+    8 global_declaration: '(' tPUBLIC • var_type tIDENTIFIER opt_global_init ')'
+    9                   | '(' tPUBLIC • var tIDENTIFIER global_init ')'
+   10                   | '(' tPUBLIC • tIDENTIFIER global_init ')'
+
+    tIDENTIFIER   shift, and go to state 48
+    tTYPE_INT     shift, and go to state 8
+    tTYPE_STRING  shift, and go to state 9
+    tTYPE_VOID    shift, and go to state 10
+    tTYPE_DOUBLE  shift, and go to state 12
+    tVAR          shift, and go to state 15
+    '('           shift, and go to state 16
+
+    var           go to state 49
+    data_type     go to state 18
+    fun_type      go to state 19
+    var_type      go to state 50
+    void_pointer  go to state 21
+    void_type     go to state 22
+
+
+State 15
+
+   22 var: tVAR •
+
+    $default  reduce using rule 22 (var)
+
+
+State 16
+
+   87 fun_type: '(' • return_type '(' var_types ')' ')'
+   88         | '(' • return_type ')'
+
+    tTYPE_INT     shift, and go to state 8
+    tTYPE_STRING  shift, and go to state 9
+    tTYPE_VOID    shift, and go to state 10
+    tTYPE_DOUBLE  shift, and go to state 12
+    '('           shift, and go to state 16
+
+    data_type     go to state 18
+    fun_type      go to state 19
+    return_type   go to state 51
+    var_type      go to state 52
+    void_pointer  go to state 21
+    void_type     go to state 53
+
+
+State 17
+
+   14 global_declaration: '(' var • tIDENTIFIER global_init ')'
+
+    tIDENTIFIER  shift, and go to state 54
+
+
+State 18
+
+   86 data_type: data_type • '!'
+   98 var_type: data_type •
+
+    '!'  shift, and go to state 55
+
+    $default  reduce using rule 98 (var_type)
+
+
+State 19
+
+   85 data_type: fun_type •
+
+    $default  reduce using rule 85 (data_type)
+
+
+State 20
+
+   13 global_declaration: '(' var_type • tIDENTIFIER opt_global_init ')'
+
+    tIDENTIFIER  shift, and go to state 56
+
+
+State 21
+
+   99 var_type: void_pointer •
+  100 void_pointer: void_pointer • '!'
+
+    '!'  shift, and go to state 57
+
+    $default  reduce using rule 99 (var_type)
+
+
+State 22
+
+  101 void_pointer: void_type • '!'
+
+    '!'  shift, and go to state 58
+
+
+State 23
+
+    0 $accept: file $end •
+
+    $default  accept
+
+
+State 24
+
+    4 file: global_declarations main •
+
+    $default  reduce using rule 4 (file)
+
+
+State 25
+
+    7 global_declarations: global_declarations global_declaration •
+
+    $default  reduce using rule 7 (global_declarations)
+
+
+State 26
+
+  103 literal: tINTEGER •
+
+    $default  reduce using rule 103 (literal)
+
+
+State 27
+
+  104 literal: tDOUBLE •
+
+    $default  reduce using rule 104 (literal)
+
+
+State 28
+
+  105 literal: tSTRING •
+
+    $default  reduce using rule 105 (literal)
+
+
+State 29
+
+  106 literal: tNULLPTR •
+
+    $default  reduce using rule 106 (literal)
+
+
+State 30
+
+   81 fundef: '(' • tFUNCTION '(' return_type opt_args ')' block_content ')'
+
+    tFUNCTION  shift, and go to state 59
+
+
+State 31
+
+   15 global_declaration: '(' tIDENTIFIER global_init • ')'
+
+    ')'  shift, and go to state 60
+
+
+State 32
+
+   19 global_init: fundef •
+
+    $default  reduce using rule 19 (global_init)
+
+
+State 33
+
+   18 global_init: literal •
+
+    $default  reduce using rule 18 (global_init)
+
+
+State 34
+
+  107 lval: tIDENTIFIER •
+
+    $default  reduce using rule 107 (lval)
+
+
+State 35
+
+   23 block: '(' • tBLOCK block_content ')'
+   30 declaration: '(' • var_type tIDENTIFIER opt_init ')'
+   31            | '(' • var tIDENTIFIER expr ')'
+   36 instr: '(' • tIF expr instr ')'
+   37      | '(' • tIF expr instr instr ')'
+   38      | '(' • tLOOP expr instr ')'
+   39      | '(' • tSTOP ')'
+   40      | '(' • tSTOP tINTEGER ')'
+   41      | '(' • tNEXT ')'
+   42      | '(' • tNEXT tINTEGER ')'
+   43      | '(' • tRETURN ')'
+   44      | '(' • tRETURN expr ')'
+   45      | '(' • tPRINT exprs ')'
+   46      | '(' • tPRINTLN exprs ')'
+   47      | '(' • tCHANGE expr tARROW expr tWITH expr tDOTS expr ')'
+   48      | '(' • tWITH expr expr expr expr ')'
+   49      | '(' • tUNLESS expr tFOR expr tDO expr tAPPLY expr ')'
+   50      | '(' • tSWEEP expr tARROW expr tDOTS expr tWITH expr tIF expr ')'
+   56 expr: '(' • '-' expr ')'
+   57     | '(' • '+' expr ')'
+   58     | '(' • '+' expr expr ')'
+   59     | '(' • '-' expr expr ')'
+   60     | '(' • tFIND lval ')'
+   61     | '(' • '*' expr expr ')'
+   62     | '(' • '/' expr expr ')'
+   63     | '(' • '%' expr expr ')'
+   64     | '(' • '<' expr expr ')'
+   65     | '(' • '>' expr expr ')'
+   66     | '(' • tGE expr expr ')'
+   67     | '(' • tLE expr expr ')'
+   68     | '(' • tNE expr expr ')'
+   69     | '(' • tEQ expr expr ')'
+   70     | '(' • '~' expr ')'
+   71     | '(' • tAND expr expr ')'
+   72     | '(' • tOR expr expr ')'
+   73     | '(' • tREAD ')'
+   74     | '(' • tSET lval expr ')'
+   75     | '(' • tOBJECTS expr ')'
+   76     | '(' • tSIZEOF expr ')'
+   79     | '(' • tAT opt_exprs ')'
+   80     | '(' • expr opt_exprs ')'
+   81 fundef: '(' • tFUNCTION '(' return_type opt_args ')' block_content ')'
+  108 lval: '(' • tINDEX expr expr ')'
+
+    tINTEGER      shift, and go to state 26
+    tDOUBLE       shift, and go to state 27
+    tIDENTIFIER   shift, and go to state 34
+    tSTRING       shift, and go to state 28
+    tLOOP         shift, and go to state 61
+    tIF           shift, and go to state 62
+    tPRINT        shift, and go to state 63
+    tREAD         shift, and go to state 64
+    tSET          shift, and go to state 65
+    tTYPE_INT     shift, and go to state 8
+    tTYPE_STRING  shift, and go to state 9
+    tAT           shift, and go to state 66
+    tTYPE_VOID    shift, and go to state 10
+    tTYPE_DOUBLE  shift, and go to state 12
+    tNULLPTR      shift, and go to state 29
+    tVAR          shift, and go to state 15
+    tBLOCK        shift, and go to state 67
+    tSTOP         shift, and go to state 68
+    tWITH         shift, and go to state 69
+    tNEXT         shift, and go to state 70
+    tRETURN       shift, and go to state 71
+    tPRINTLN      shift, and go to state 72
+    tAND          shift, and go to state 73
+    tOR           shift, and go to state 74
+    tFIND         shift, and go to state 75
+    tINDEX        shift, and go to state 76
+    tOBJECTS      shift, and go to state 77
+    tSIZEOF       shift, and go to state 78
+    tFUNCTION     shift, and go to state 59
+    tUNLESS       shift, and go to state 79
+    tSWEEP        shift, and go to state 80
+    tCHANGE       shift, and go to state 81
+    tGE           shift, and go to state 82
+    tLE           shift, and go to state 83
+    tEQ           shift, and go to state 84
+    tNE           shift, and go to state 85
+    '>'           shift, and go to state 86
+    '<'           shift, and go to state 87
+    '+'           shift, and go to state 88
+    '-'           shift, and go to state 89
+    '*'           shift, and go to state 90
+    '/'           shift, and go to state 91
+    '%'           shift, and go to state 92
+    '('           shift, and go to state 93
+    '~'           shift, and go to state 94
+
+    var           go to state 95
+    expr          go to state 96
+    fundef        go to state 43
+    data_type     go to state 18
+    fun_type      go to state 19
+    var_type      go to state 97
+    void_pointer  go to state 21
+    void_type     go to state 22
+    literal       go to state 44
+    lval          go to state 45
+
+
+State 36
+
+   34 instr: block •
+
+    $default  reduce using rule 34 (instr)
+
+
+State 37
+
+    5 main: '(' tPROGRAM block_content • ')'
+
+    ')'  shift, and go to state 98
+
+
+State 38
+
+   24 block_content: declarations • instrs
+   25              | declarations •
+   29 declarations: declarations • declaration
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 35
+
+    $default  reduce using rule 25 (block_content)
+
+    block        go to state 36
+    declaration  go to state 99
+    instrs       go to state 100
+    instr        go to state 41
+    expr         go to state 42
+    fundef       go to state 43
+    literal      go to state 44
+    lval         go to state 45
+
+
+State 39
+
+   28 declarations: declaration •
+
+    $default  reduce using rule 28 (declarations)
+
+
+State 40
+
+   26 block_content: instrs •
+   33 instrs: instrs • instr
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 101
+
+    $default  reduce using rule 26 (block_content)
+
+    block    go to state 36
+    instr    go to state 102
+    expr     go to state 42
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 41
+
+   32 instrs: instr •
+
+    $default  reduce using rule 32 (instrs)
+
+
+State 42
+
+   35 instr: expr •
+
+    $default  reduce using rule 35 (instr)
+
+
+State 43
+
+   78 expr: fundef •
+
+    $default  reduce using rule 78 (expr)
+
+
+State 44
+
+   55 expr: literal •
+
+    $default  reduce using rule 55 (expr)
+
+
+State 45
+
+   77 expr: lval •
+
+    $default  reduce using rule 77 (expr)
+
+
+State 46
+
+   12 global_declaration: '(' tEXTERNAL fun_type • tIDENTIFIER ')'
+
+    tIDENTIFIER  shift, and go to state 103
+
+
+State 47
+
+   11 global_declaration: '(' tFORWARD var_type • tIDENTIFIER ')'
+
+    tIDENTIFIER  shift, and go to state 104
+
+
+State 48
+
+   10 global_declaration: '(' tPUBLIC tIDENTIFIER • global_init ')'
+
+    tINTEGER  shift, and go to state 26
+    tDOUBLE   shift, and go to state 27
+    tSTRING   shift, and go to state 28
+    tNULLPTR  shift, and go to state 29
+    '('       shift, and go to state 30
+
+    global_init  go to state 105
+    fundef       go to state 32
+    literal      go to state 33
+
+
+State 49
+
+    9 global_declaration: '(' tPUBLIC var • tIDENTIFIER global_init ')'
+
+    tIDENTIFIER  shift, and go to state 106
+
+
+State 50
+
+    8 global_declaration: '(' tPUBLIC var_type • tIDENTIFIER opt_global_init ')'
+
+    tIDENTIFIER  shift, and go to state 107
+
+
+State 51
+
+   87 fun_type: '(' return_type • '(' var_types ')' ')'
+   88         | '(' return_type • ')'
+
+    '('  shift, and go to state 108
+    ')'  shift, and go to state 109
+
+
+State 52
+
+   89 return_type: var_type •
+
+    $default  reduce using rule 89 (return_type)
+
+
+State 53
+
+   90 return_type: void_type •
+  101 void_pointer: void_type • '!'
+
+    '!'  shift, and go to state 58
+
+    $default  reduce using rule 90 (return_type)
+
+
+State 54
+
+   14 global_declaration: '(' var tIDENTIFIER • global_init ')'
+
+    tINTEGER  shift, and go to state 26
+    tDOUBLE   shift, and go to state 27
+    tSTRING   shift, and go to state 28
+    tNULLPTR  shift, and go to state 29
+    '('       shift, and go to state 30
+
+    global_init  go to state 110
+    fundef       go to state 32
+    literal      go to state 33
+
+
+State 55
+
+   86 data_type: data_type '!' •
+
+    $default  reduce using rule 86 (data_type)
+
+
+State 56
+
+   13 global_declaration: '(' var_type tIDENTIFIER • opt_global_init ')'
+
+    tINTEGER  shift, and go to state 26
+    tDOUBLE   shift, and go to state 27
+    tSTRING   shift, and go to state 28
+    tNULLPTR  shift, and go to state 29
+    '('       shift, and go to state 30
+
+    $default  reduce using rule 16 (opt_global_init)
+
+    opt_global_init  go to state 111
+    global_init      go to state 112
+    fundef           go to state 32
+    literal          go to state 33
+
+
+State 57
+
+  100 void_pointer: void_pointer '!' •
+
+    $default  reduce using rule 100 (void_pointer)
+
+
+State 58
+
+  101 void_pointer: void_type '!' •
+
+    $default  reduce using rule 101 (void_pointer)
+
+
+State 59
+
+   81 fundef: '(' tFUNCTION • '(' return_type opt_args ')' block_content ')'
+
+    '('  shift, and go to state 113
+
+
+State 60
+
+   15 global_declaration: '(' tIDENTIFIER global_init ')' •
+
+    $default  reduce using rule 15 (global_declaration)
+
+
+State 61
+
+   38 instr: '(' tLOOP • expr instr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 115
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 62
+
+   36 instr: '(' tIF • expr instr ')'
+   37      | '(' tIF • expr instr instr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 116
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 63
+
+   45 instr: '(' tPRINT • exprs ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    exprs    go to state 117
+    expr     go to state 118
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 64
+
+   73 expr: '(' tREAD • ')'
+
+    ')'  shift, and go to state 119
+
+
+State 65
+
+   74 expr: '(' tSET • lval expr ')'
+
+    tIDENTIFIER  shift, and go to state 34
+    '('          shift, and go to state 120
+
+    lval  go to state 121
+
+
+State 66
+
+   79 expr: '(' tAT • opt_exprs ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    $default  reduce using rule 51 (opt_exprs)
+
+    opt_exprs  go to state 122
+    exprs      go to state 123
+    expr       go to state 118
+    fundef     go to state 43
+    literal    go to state 44
+    lval       go to state 45
+
+
+State 67
+
+   23 block: '(' tBLOCK • block_content ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 35
+
+    $default  reduce using rule 27 (block_content)
+
+    block          go to state 36
+    block_content  go to state 124
+    declarations   go to state 38
+    declaration    go to state 39
+    instrs         go to state 40
+    instr          go to state 41
+    expr           go to state 42
+    fundef         go to state 43
+    literal        go to state 44
+    lval           go to state 45
+
+
+State 68
+
+   39 instr: '(' tSTOP • ')'
+   40      | '(' tSTOP • tINTEGER ')'
+
+    tINTEGER  shift, and go to state 125
+    ')'       shift, and go to state 126
+
+
+State 69
+
+   48 instr: '(' tWITH • expr expr expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 127
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 70
+
+   41 instr: '(' tNEXT • ')'
+   42      | '(' tNEXT • tINTEGER ')'
+
+    tINTEGER  shift, and go to state 128
+    ')'       shift, and go to state 129
+
+
+State 71
+
+   43 instr: '(' tRETURN • ')'
+   44      | '(' tRETURN • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+    ')'          shift, and go to state 130
+
+    expr     go to state 131
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 72
+
+   46 instr: '(' tPRINTLN • exprs ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    exprs    go to state 132
+    expr     go to state 118
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 73
+
+   71 expr: '(' tAND • expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 133
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 74
+
+   72 expr: '(' tOR • expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 134
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 75
+
+   60 expr: '(' tFIND • lval ')'
+
+    tIDENTIFIER  shift, and go to state 34
+    '('          shift, and go to state 120
+
+    lval  go to state 135
+
+
+State 76
+
+  108 lval: '(' tINDEX • expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 136
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 77
+
+   75 expr: '(' tOBJECTS • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 137
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 78
+
+   76 expr: '(' tSIZEOF • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 138
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 79
+
+   49 instr: '(' tUNLESS • expr tFOR expr tDO expr tAPPLY expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 139
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 80
+
+   50 instr: '(' tSWEEP • expr tARROW expr tDOTS expr tWITH expr tIF expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 140
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 81
+
+   47 instr: '(' tCHANGE • expr tARROW expr tWITH expr tDOTS expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 141
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 82
+
+   66 expr: '(' tGE • expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 142
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 83
+
+   67 expr: '(' tLE • expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 143
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 84
+
+   69 expr: '(' tEQ • expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 144
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 85
+
+   68 expr: '(' tNE • expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 145
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 86
+
+   65 expr: '(' '>' • expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 146
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 87
+
+   64 expr: '(' '<' • expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 147
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 88
+
+   57 expr: '(' '+' • expr ')'
+   58     | '(' '+' • expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 148
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 89
+
+   56 expr: '(' '-' • expr ')'
+   59     | '(' '-' • expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 149
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 90
+
+   61 expr: '(' '*' • expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 150
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 91
+
+   62 expr: '(' '/' • expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 151
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 92
+
+   63 expr: '(' '%' • expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 152
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 93
+
+   56 expr: '(' • '-' expr ')'
+   57     | '(' • '+' expr ')'
+   58     | '(' • '+' expr expr ')'
+   59     | '(' • '-' expr expr ')'
+   60     | '(' • tFIND lval ')'
+   61     | '(' • '*' expr expr ')'
+   62     | '(' • '/' expr expr ')'
+   63     | '(' • '%' expr expr ')'
+   64     | '(' • '<' expr expr ')'
+   65     | '(' • '>' expr expr ')'
+   66     | '(' • tGE expr expr ')'
+   67     | '(' • tLE expr expr ')'
+   68     | '(' • tNE expr expr ')'
+   69     | '(' • tEQ expr expr ')'
+   70     | '(' • '~' expr ')'
+   71     | '(' • tAND expr expr ')'
+   72     | '(' • tOR expr expr ')'
+   73     | '(' • tREAD ')'
+   74     | '(' • tSET lval expr ')'
+   75     | '(' • tOBJECTS expr ')'
+   76     | '(' • tSIZEOF expr ')'
+   79     | '(' • tAT opt_exprs ')'
+   80     | '(' • expr opt_exprs ')'
+   81 fundef: '(' • tFUNCTION '(' return_type opt_args ')' block_content ')'
+   87 fun_type: '(' • return_type '(' var_types ')' ')'
+   88         | '(' • return_type ')'
+  108 lval: '(' • tINDEX expr expr ')'
+
+    tINTEGER      shift, and go to state 26
+    tDOUBLE       shift, and go to state 27
+    tIDENTIFIER   shift, and go to state 34
+    tSTRING       shift, and go to state 28
+    tREAD         shift, and go to state 64
+    tSET          shift, and go to state 65
+    tTYPE_INT     shift, and go to state 8
+    tTYPE_STRING  shift, and go to state 9
+    tAT           shift, and go to state 66
+    tTYPE_VOID    shift, and go to state 10
+    tTYPE_DOUBLE  shift, and go to state 12
+    tNULLPTR      shift, and go to state 29
+    tAND          shift, and go to state 73
+    tOR           shift, and go to state 74
+    tFIND         shift, and go to state 75
+    tINDEX        shift, and go to state 76
+    tOBJECTS      shift, and go to state 77
+    tSIZEOF       shift, and go to state 78
+    tFUNCTION     shift, and go to state 59
+    tGE           shift, and go to state 82
+    tLE           shift, and go to state 83
+    tEQ           shift, and go to state 84
+    tNE           shift, and go to state 85
+    '>'           shift, and go to state 86
+    '<'           shift, and go to state 87
+    '+'           shift, and go to state 88
+    '-'           shift, and go to state 89
+    '*'           shift, and go to state 90
+    '/'           shift, and go to state 91
+    '%'           shift, and go to state 92
+    '('           shift, and go to state 93
+    '~'           shift, and go to state 94
+
+    expr          go to state 96
+    fundef        go to state 43
+    data_type     go to state 18
+    fun_type      go to state 19
+    return_type   go to state 51
+    var_type      go to state 52
+    void_pointer  go to state 21
+    void_type     go to state 53
+    literal       go to state 44
+    lval          go to state 45
+
+
+State 94
+
+   70 expr: '(' '~' • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 153
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 95
+
+   31 declaration: '(' var • tIDENTIFIER expr ')'
+
+    tIDENTIFIER  shift, and go to state 154
+
+
+State 96
+
+   80 expr: '(' expr • opt_exprs ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    $default  reduce using rule 51 (opt_exprs)
+
+    opt_exprs  go to state 155
+    exprs      go to state 123
+    expr       go to state 118
+    fundef     go to state 43
+    literal    go to state 44
+    lval       go to state 45
+
+
+State 97
+
+   30 declaration: '(' var_type • tIDENTIFIER opt_init ')'
+
+    tIDENTIFIER  shift, and go to state 156
+
+
+State 98
+
+    5 main: '(' tPROGRAM block_content ')' •
+
+    $default  reduce using rule 5 (main)
+
+
+State 99
+
+   29 declarations: declarations declaration •
+
+    $default  reduce using rule 29 (declarations)
+
+
+State 100
+
+   24 block_content: declarations instrs •
+   33 instrs: instrs • instr
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 101
+
+    $default  reduce using rule 24 (block_content)
+
+    block    go to state 36
+    instr    go to state 102
+    expr     go to state 42
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 101
+
+   23 block: '(' • tBLOCK block_content ')'
+   36 instr: '(' • tIF expr instr ')'
+   37      | '(' • tIF expr instr instr ')'
+   38      | '(' • tLOOP expr instr ')'
+   39      | '(' • tSTOP ')'
+   40      | '(' • tSTOP tINTEGER ')'
+   41      | '(' • tNEXT ')'
+   42      | '(' • tNEXT tINTEGER ')'
+   43      | '(' • tRETURN ')'
+   44      | '(' • tRETURN expr ')'
+   45      | '(' • tPRINT exprs ')'
+   46      | '(' • tPRINTLN exprs ')'
+   47      | '(' • tCHANGE expr tARROW expr tWITH expr tDOTS expr ')'
+   48      | '(' • tWITH expr expr expr expr ')'
+   49      | '(' • tUNLESS expr tFOR expr tDO expr tAPPLY expr ')'
+   50      | '(' • tSWEEP expr tARROW expr tDOTS expr tWITH expr tIF expr ')'
+   56 expr: '(' • '-' expr ')'
+   57     | '(' • '+' expr ')'
+   58     | '(' • '+' expr expr ')'
+   59     | '(' • '-' expr expr ')'
+   60     | '(' • tFIND lval ')'
+   61     | '(' • '*' expr expr ')'
+   62     | '(' • '/' expr expr ')'
+   63     | '(' • '%' expr expr ')'
+   64     | '(' • '<' expr expr ')'
+   65     | '(' • '>' expr expr ')'
+   66     | '(' • tGE expr expr ')'
+   67     | '(' • tLE expr expr ')'
+   68     | '(' • tNE expr expr ')'
+   69     | '(' • tEQ expr expr ')'
+   70     | '(' • '~' expr ')'
+   71     | '(' • tAND expr expr ')'
+   72     | '(' • tOR expr expr ')'
+   73     | '(' • tREAD ')'
+   74     | '(' • tSET lval expr ')'
+   75     | '(' • tOBJECTS expr ')'
+   76     | '(' • tSIZEOF expr ')'
+   79     | '(' • tAT opt_exprs ')'
+   80     | '(' • expr opt_exprs ')'
+   81 fundef: '(' • tFUNCTION '(' return_type opt_args ')' block_content ')'
+  108 lval: '(' • tINDEX expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tLOOP        shift, and go to state 61
+    tIF          shift, and go to state 62
+    tPRINT       shift, and go to state 63
+    tREAD        shift, and go to state 64
+    tSET         shift, and go to state 65
+    tAT          shift, and go to state 66
+    tNULLPTR     shift, and go to state 29
+    tBLOCK       shift, and go to state 67
+    tSTOP        shift, and go to state 68
+    tWITH        shift, and go to state 69
+    tNEXT        shift, and go to state 70
+    tRETURN      shift, and go to state 71
+    tPRINTLN     shift, and go to state 72
+    tAND         shift, and go to state 73
+    tOR          shift, and go to state 74
+    tFIND        shift, and go to state 75
+    tINDEX       shift, and go to state 76
+    tOBJECTS     shift, and go to state 77
+    tSIZEOF      shift, and go to state 78
+    tFUNCTION    shift, and go to state 59
+    tUNLESS      shift, and go to state 79
+    tSWEEP       shift, and go to state 80
+    tCHANGE      shift, and go to state 81
+    tGE          shift, and go to state 82
+    tLE          shift, and go to state 83
+    tEQ          shift, and go to state 84
+    tNE          shift, and go to state 85
+    '>'          shift, and go to state 86
+    '<'          shift, and go to state 87
+    '+'          shift, and go to state 88
+    '-'          shift, and go to state 89
+    '*'          shift, and go to state 90
+    '/'          shift, and go to state 91
+    '%'          shift, and go to state 92
+    '('          shift, and go to state 114
+    '~'          shift, and go to state 94
+
+    expr     go to state 96
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 102
+
+   33 instrs: instrs instr •
+
+    $default  reduce using rule 33 (instrs)
+
+
+State 103
+
+   12 global_declaration: '(' tEXTERNAL fun_type tIDENTIFIER • ')'
+
+    ')'  shift, and go to state 157
+
+
+State 104
+
+   11 global_declaration: '(' tFORWARD var_type tIDENTIFIER • ')'
+
+    ')'  shift, and go to state 158
+
+
+State 105
+
+   10 global_declaration: '(' tPUBLIC tIDENTIFIER global_init • ')'
+
+    ')'  shift, and go to state 159
+
+
+State 106
+
+    9 global_declaration: '(' tPUBLIC var tIDENTIFIER • global_init ')'
+
+    tINTEGER  shift, and go to state 26
+    tDOUBLE   shift, and go to state 27
+    tSTRING   shift, and go to state 28
+    tNULLPTR  shift, and go to state 29
+    '('       shift, and go to state 30
+
+    global_init  go to state 160
+    fundef       go to state 32
+    literal      go to state 33
+
+
+State 107
+
+    8 global_declaration: '(' tPUBLIC var_type tIDENTIFIER • opt_global_init ')'
+
+    tINTEGER  shift, and go to state 26
+    tDOUBLE   shift, and go to state 27
+    tSTRING   shift, and go to state 28
+    tNULLPTR  shift, and go to state 29
+    '('       shift, and go to state 30
+
+    $default  reduce using rule 16 (opt_global_init)
+
+    opt_global_init  go to state 161
+    global_init      go to state 112
+    fundef           go to state 32
+    literal          go to state 33
+
+
+State 108
+
+   87 fun_type: '(' return_type '(' • var_types ')' ')'
+
+    tTYPE_INT     shift, and go to state 8
+    tTYPE_STRING  shift, and go to state 9
+    tTYPE_VOID    shift, and go to state 10
+    tTYPE_DOUBLE  shift, and go to state 12
+    '('           shift, and go to state 16
+
+    data_type     go to state 18
+    fun_type      go to state 19
+    var_types     go to state 162
+    var_type      go to state 163
+    void_pointer  go to state 21
+    void_type     go to state 22
+
+
+State 109
+
+   88 fun_type: '(' return_type ')' •
+
+    $default  reduce using rule 88 (fun_type)
+
+
+State 110
+
+   14 global_declaration: '(' var tIDENTIFIER global_init • ')'
+
+    ')'  shift, and go to state 164
+
+
+State 111
+
+   13 global_declaration: '(' var_type tIDENTIFIER opt_global_init • ')'
+
+    ')'  shift, and go to state 165
+
+
+State 112
+
+   17 opt_global_init: global_init •
+
+    $default  reduce using rule 17 (opt_global_init)
+
+
+State 113
+
+   81 fundef: '(' tFUNCTION '(' • return_type opt_args ')' block_content ')'
+
+    tTYPE_INT     shift, and go to state 8
+    tTYPE_STRING  shift, and go to state 9
+    tTYPE_VOID    shift, and go to state 10
+    tTYPE_DOUBLE  shift, and go to state 12
+    '('           shift, and go to state 16
+
+    data_type     go to state 18
+    fun_type      go to state 19
+    return_type   go to state 166
+    var_type      go to state 52
+    void_pointer  go to state 21
+    void_type     go to state 53
+
+
+State 114
+
+   56 expr: '(' • '-' expr ')'
+   57     | '(' • '+' expr ')'
+   58     | '(' • '+' expr expr ')'
+   59     | '(' • '-' expr expr ')'
+   60     | '(' • tFIND lval ')'
+   61     | '(' • '*' expr expr ')'
+   62     | '(' • '/' expr expr ')'
+   63     | '(' • '%' expr expr ')'
+   64     | '(' • '<' expr expr ')'
+   65     | '(' • '>' expr expr ')'
+   66     | '(' • tGE expr expr ')'
+   67     | '(' • tLE expr expr ')'
+   68     | '(' • tNE expr expr ')'
+   69     | '(' • tEQ expr expr ')'
+   70     | '(' • '~' expr ')'
+   71     | '(' • tAND expr expr ')'
+   72     | '(' • tOR expr expr ')'
+   73     | '(' • tREAD ')'
+   74     | '(' • tSET lval expr ')'
+   75     | '(' • tOBJECTS expr ')'
+   76     | '(' • tSIZEOF expr ')'
+   79     | '(' • tAT opt_exprs ')'
+   80     | '(' • expr opt_exprs ')'
+   81 fundef: '(' • tFUNCTION '(' return_type opt_args ')' block_content ')'
+  108 lval: '(' • tINDEX expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tREAD        shift, and go to state 64
+    tSET         shift, and go to state 65
+    tAT          shift, and go to state 66
+    tNULLPTR     shift, and go to state 29
+    tAND         shift, and go to state 73
+    tOR          shift, and go to state 74
+    tFIND        shift, and go to state 75
+    tINDEX       shift, and go to state 76
+    tOBJECTS     shift, and go to state 77
+    tSIZEOF      shift, and go to state 78
+    tFUNCTION    shift, and go to state 59
+    tGE          shift, and go to state 82
+    tLE          shift, and go to state 83
+    tEQ          shift, and go to state 84
+    tNE          shift, and go to state 85
+    '>'          shift, and go to state 86
+    '<'          shift, and go to state 87
+    '+'          shift, and go to state 88
+    '-'          shift, and go to state 89
+    '*'          shift, and go to state 90
+    '/'          shift, and go to state 91
+    '%'          shift, and go to state 92
+    '('          shift, and go to state 114
+    '~'          shift, and go to state 94
+
+    expr     go to state 96
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 115
+
+   38 instr: '(' tLOOP expr • instr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 101
+
+    block    go to state 36
+    instr    go to state 167
+    expr     go to state 42
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 116
+
+   36 instr: '(' tIF expr • instr ')'
+   37      | '(' tIF expr • instr instr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 101
+
+    block    go to state 36
+    instr    go to state 168
+    expr     go to state 42
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 117
+
+   45 instr: '(' tPRINT exprs • ')'
+   54 exprs: exprs • expr
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+    ')'          shift, and go to state 169
+
+    expr     go to state 170
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 118
+
+   53 exprs: expr •
+
+    $default  reduce using rule 53 (exprs)
+
+
+State 119
+
+   73 expr: '(' tREAD ')' •
+
+    $default  reduce using rule 73 (expr)
+
+
+State 120
+
+  108 lval: '(' • tINDEX expr expr ')'
+
+    tINDEX  shift, and go to state 76
+
+
+State 121
+
+   74 expr: '(' tSET lval • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 171
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 122
+
+   79 expr: '(' tAT opt_exprs • ')'
+
+    ')'  shift, and go to state 172
+
+
+State 123
+
+   52 opt_exprs: exprs •
+   54 exprs: exprs • expr
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    $default  reduce using rule 52 (opt_exprs)
+
+    expr     go to state 170
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 124
+
+   23 block: '(' tBLOCK block_content • ')'
+
+    ')'  shift, and go to state 173
+
+
+State 125
+
+   40 instr: '(' tSTOP tINTEGER • ')'
+
+    ')'  shift, and go to state 174
+
+
+State 126
+
+   39 instr: '(' tSTOP ')' •
+
+    $default  reduce using rule 39 (instr)
+
+
+State 127
+
+   48 instr: '(' tWITH expr • expr expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 175
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 128
+
+   42 instr: '(' tNEXT tINTEGER • ')'
+
+    ')'  shift, and go to state 176
+
+
+State 129
+
+   41 instr: '(' tNEXT ')' •
+
+    $default  reduce using rule 41 (instr)
+
+
+State 130
+
+   43 instr: '(' tRETURN ')' •
+
+    $default  reduce using rule 43 (instr)
+
+
+State 131
+
+   44 instr: '(' tRETURN expr • ')'
+
+    ')'  shift, and go to state 177
+
+
+State 132
+
+   46 instr: '(' tPRINTLN exprs • ')'
+   54 exprs: exprs • expr
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+    ')'          shift, and go to state 178
+
+    expr     go to state 170
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 133
+
+   71 expr: '(' tAND expr • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 179
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 134
+
+   72 expr: '(' tOR expr • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 180
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 135
+
+   60 expr: '(' tFIND lval • ')'
+
+    ')'  shift, and go to state 181
+
+
+State 136
+
+  108 lval: '(' tINDEX expr • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 182
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 137
+
+   75 expr: '(' tOBJECTS expr • ')'
+
+    ')'  shift, and go to state 183
+
+
+State 138
+
+   76 expr: '(' tSIZEOF expr • ')'
+
+    ')'  shift, and go to state 184
+
+
+State 139
+
+   49 instr: '(' tUNLESS expr • tFOR expr tDO expr tAPPLY expr ')'
+
+    tFOR  shift, and go to state 185
+
+
+State 140
+
+   50 instr: '(' tSWEEP expr • tARROW expr tDOTS expr tWITH expr tIF expr ')'
+
+    tARROW  shift, and go to state 186
+
+
+State 141
+
+   47 instr: '(' tCHANGE expr • tARROW expr tWITH expr tDOTS expr ')'
+
+    tARROW  shift, and go to state 187
+
+
+State 142
+
+   66 expr: '(' tGE expr • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 188
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 143
+
+   67 expr: '(' tLE expr • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 189
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 144
+
+   69 expr: '(' tEQ expr • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 190
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 145
+
+   68 expr: '(' tNE expr • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 191
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 146
+
+   65 expr: '(' '>' expr • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 192
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 147
+
+   64 expr: '(' '<' expr • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 193
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 148
+
+   57 expr: '(' '+' expr • ')'
+   58     | '(' '+' expr • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+    ')'          shift, and go to state 194
+
+    expr     go to state 195
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 149
+
+   56 expr: '(' '-' expr • ')'
+   59     | '(' '-' expr • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+    ')'          shift, and go to state 196
+
+    expr     go to state 197
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 150
+
+   61 expr: '(' '*' expr • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 198
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 151
+
+   62 expr: '(' '/' expr • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 199
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 152
+
+   63 expr: '(' '%' expr • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 200
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 153
+
+   70 expr: '(' '~' expr • ')'
+
+    ')'  shift, and go to state 201
+
+
+State 154
+
+   31 declaration: '(' var tIDENTIFIER • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 202
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 155
+
+   80 expr: '(' expr opt_exprs • ')'
+
+    ')'  shift, and go to state 203
+
+
+State 156
+
+   30 declaration: '(' var_type tIDENTIFIER • opt_init ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    $default  reduce using rule 20 (opt_init)
+
+    opt_init  go to state 204
+    expr      go to state 205
+    fundef    go to state 43
+    literal   go to state 44
+    lval      go to state 45
+
+
+State 157
+
+   12 global_declaration: '(' tEXTERNAL fun_type tIDENTIFIER ')' •
+
+    $default  reduce using rule 12 (global_declaration)
+
+
+State 158
+
+   11 global_declaration: '(' tFORWARD var_type tIDENTIFIER ')' •
+
+    $default  reduce using rule 11 (global_declaration)
+
+
+State 159
+
+   10 global_declaration: '(' tPUBLIC tIDENTIFIER global_init ')' •
+
+    $default  reduce using rule 10 (global_declaration)
+
+
+State 160
+
+    9 global_declaration: '(' tPUBLIC var tIDENTIFIER global_init • ')'
+
+    ')'  shift, and go to state 206
+
+
+State 161
+
+    8 global_declaration: '(' tPUBLIC var_type tIDENTIFIER opt_global_init • ')'
+
+    ')'  shift, and go to state 207
+
+
+State 162
+
+   87 fun_type: '(' return_type '(' var_types • ')' ')'
+   97 var_types: var_types • var_type
+
+    tTYPE_INT     shift, and go to state 8
+    tTYPE_STRING  shift, and go to state 9
+    tTYPE_VOID    shift, and go to state 10
+    tTYPE_DOUBLE  shift, and go to state 12
+    '('           shift, and go to state 16
+    ')'           shift, and go to state 208
+
+    data_type     go to state 18
+    fun_type      go to state 19
+    var_type      go to state 209
+    void_pointer  go to state 21
+    void_type     go to state 22
+
+
+State 163
+
+   96 var_types: var_type •
+
+    $default  reduce using rule 96 (var_types)
+
+
+State 164
+
+   14 global_declaration: '(' var tIDENTIFIER global_init ')' •
+
+    $default  reduce using rule 14 (global_declaration)
+
+
+State 165
+
+   13 global_declaration: '(' var_type tIDENTIFIER opt_global_init ')' •
+
+    $default  reduce using rule 13 (global_declaration)
+
+
+State 166
+
+   81 fundef: '(' tFUNCTION '(' return_type • opt_args ')' block_content ')'
+
+    '('  shift, and go to state 210
+
+    $default  reduce using rule 91 (opt_args)
+
+    opt_args  go to state 211
+    args      go to state 212
+    arg       go to state 213
+
+
+State 167
+
+   38 instr: '(' tLOOP expr instr • ')'
+
+    ')'  shift, and go to state 214
+
+
+State 168
+
+   36 instr: '(' tIF expr instr • ')'
+   37      | '(' tIF expr instr • instr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 101
+    ')'          shift, and go to state 215
+
+    block    go to state 36
+    instr    go to state 216
+    expr     go to state 42
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 169
+
+   45 instr: '(' tPRINT exprs ')' •
+
+    $default  reduce using rule 45 (instr)
+
+
+State 170
+
+   54 exprs: exprs expr •
+
+    $default  reduce using rule 54 (exprs)
+
+
+State 171
+
+   74 expr: '(' tSET lval expr • ')'
+
+    ')'  shift, and go to state 217
+
+
+State 172
+
+   79 expr: '(' tAT opt_exprs ')' •
+
+    $default  reduce using rule 79 (expr)
+
+
+State 173
+
+   23 block: '(' tBLOCK block_content ')' •
+
+    $default  reduce using rule 23 (block)
+
+
+State 174
+
+   40 instr: '(' tSTOP tINTEGER ')' •
+
+    $default  reduce using rule 40 (instr)
+
+
+State 175
+
+   48 instr: '(' tWITH expr expr • expr expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 218
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 176
+
+   42 instr: '(' tNEXT tINTEGER ')' •
+
+    $default  reduce using rule 42 (instr)
+
+
+State 177
+
+   44 instr: '(' tRETURN expr ')' •
+
+    $default  reduce using rule 44 (instr)
+
+
+State 178
+
+   46 instr: '(' tPRINTLN exprs ')' •
+
+    $default  reduce using rule 46 (instr)
+
+
+State 179
+
+   71 expr: '(' tAND expr expr • ')'
+
+    ')'  shift, and go to state 219
+
+
+State 180
+
+   72 expr: '(' tOR expr expr • ')'
+
+    ')'  shift, and go to state 220
+
+
+State 181
+
+   60 expr: '(' tFIND lval ')' •
+
+    $default  reduce using rule 60 (expr)
+
+
+State 182
+
+  108 lval: '(' tINDEX expr expr • ')'
+
+    ')'  shift, and go to state 221
+
+
+State 183
+
+   75 expr: '(' tOBJECTS expr ')' •
+
+    $default  reduce using rule 75 (expr)
+
+
+State 184
+
+   76 expr: '(' tSIZEOF expr ')' •
+
+    $default  reduce using rule 76 (expr)
+
+
+State 185
+
+   49 instr: '(' tUNLESS expr tFOR • expr tDO expr tAPPLY expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 222
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 186
+
+   50 instr: '(' tSWEEP expr tARROW • expr tDOTS expr tWITH expr tIF expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 223
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 187
+
+   47 instr: '(' tCHANGE expr tARROW • expr tWITH expr tDOTS expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 224
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 188
+
+   66 expr: '(' tGE expr expr • ')'
+
+    ')'  shift, and go to state 225
+
+
+State 189
+
+   67 expr: '(' tLE expr expr • ')'
+
+    ')'  shift, and go to state 226
+
+
+State 190
+
+   69 expr: '(' tEQ expr expr • ')'
+
+    ')'  shift, and go to state 227
+
+
+State 191
+
+   68 expr: '(' tNE expr expr • ')'
+
+    ')'  shift, and go to state 228
+
+
+State 192
+
+   65 expr: '(' '>' expr expr • ')'
+
+    ')'  shift, and go to state 229
+
+
+State 193
+
+   64 expr: '(' '<' expr expr • ')'
+
+    ')'  shift, and go to state 230
+
+
+State 194
+
+   57 expr: '(' '+' expr ')' •
+
+    $default  reduce using rule 57 (expr)
+
+
+State 195
+
+   58 expr: '(' '+' expr expr • ')'
+
+    ')'  shift, and go to state 231
+
+
+State 196
+
+   56 expr: '(' '-' expr ')' •
+
+    $default  reduce using rule 56 (expr)
+
+
+State 197
+
+   59 expr: '(' '-' expr expr • ')'
+
+    ')'  shift, and go to state 232
+
+
+State 198
+
+   61 expr: '(' '*' expr expr • ')'
+
+    ')'  shift, and go to state 233
+
+
+State 199
+
+   62 expr: '(' '/' expr expr • ')'
+
+    ')'  shift, and go to state 234
+
+
+State 200
+
+   63 expr: '(' '%' expr expr • ')'
+
+    ')'  shift, and go to state 235
+
+
+State 201
+
+   70 expr: '(' '~' expr ')' •
+
+    $default  reduce using rule 70 (expr)
+
+
+State 202
+
+   31 declaration: '(' var tIDENTIFIER expr • ')'
+
+    ')'  shift, and go to state 236
+
+
+State 203
+
+   80 expr: '(' expr opt_exprs ')' •
+
+    $default  reduce using rule 80 (expr)
+
+
+State 204
+
+   30 declaration: '(' var_type tIDENTIFIER opt_init • ')'
+
+    ')'  shift, and go to state 237
+
+
+State 205
+
+   21 opt_init: expr •
+
+    $default  reduce using rule 21 (opt_init)
+
+
+State 206
+
+    9 global_declaration: '(' tPUBLIC var tIDENTIFIER global_init ')' •
+
+    $default  reduce using rule 9 (global_declaration)
+
+
+State 207
+
+    8 global_declaration: '(' tPUBLIC var_type tIDENTIFIER opt_global_init ')' •
+
+    $default  reduce using rule 8 (global_declaration)
+
+
+State 208
+
+   87 fun_type: '(' return_type '(' var_types ')' • ')'
+
+    ')'  shift, and go to state 238
+
+
+State 209
+
+   97 var_types: var_types var_type •
+
+    $default  reduce using rule 97 (var_types)
+
+
+State 210
+
+   95 arg: '(' • var_type tIDENTIFIER ')'
+
+    tTYPE_INT     shift, and go to state 8
+    tTYPE_STRING  shift, and go to state 9
+    tTYPE_VOID    shift, and go to state 10
+    tTYPE_DOUBLE  shift, and go to state 12
+    '('           shift, and go to state 16
+
+    data_type     go to state 18
+    fun_type      go to state 19
+    var_type      go to state 239
+    void_pointer  go to state 21
+    void_type     go to state 22
+
+
+State 211
+
+   81 fundef: '(' tFUNCTION '(' return_type opt_args • ')' block_content ')'
+
+    ')'  shift, and go to state 240
+
+
+State 212
+
+   92 opt_args: args •
+   94 args: args • arg
+
+    '('  shift, and go to state 210
+
+    $default  reduce using rule 92 (opt_args)
+
+    arg  go to state 241
+
+
+State 213
+
+   93 args: arg •
+
+    $default  reduce using rule 93 (args)
+
+
+State 214
+
+   38 instr: '(' tLOOP expr instr ')' •
+
+    $default  reduce using rule 38 (instr)
+
+
+State 215
+
+   36 instr: '(' tIF expr instr ')' •
+
+    $default  reduce using rule 36 (instr)
+
+
+State 216
+
+   37 instr: '(' tIF expr instr instr • ')'
+
+    ')'  shift, and go to state 242
+
+
+State 217
+
+   74 expr: '(' tSET lval expr ')' •
+
+    $default  reduce using rule 74 (expr)
+
+
+State 218
+
+   48 instr: '(' tWITH expr expr expr • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 243
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 219
+
+   71 expr: '(' tAND expr expr ')' •
+
+    $default  reduce using rule 71 (expr)
+
+
+State 220
+
+   72 expr: '(' tOR expr expr ')' •
+
+    $default  reduce using rule 72 (expr)
+
+
+State 221
+
+  108 lval: '(' tINDEX expr expr ')' •
+
+    $default  reduce using rule 108 (lval)
+
+
+State 222
+
+   49 instr: '(' tUNLESS expr tFOR expr • tDO expr tAPPLY expr ')'
+
+    tDO  shift, and go to state 244
+
+
+State 223
+
+   50 instr: '(' tSWEEP expr tARROW expr • tDOTS expr tWITH expr tIF expr ')'
+
+    tDOTS  shift, and go to state 245
+
+
+State 224
+
+   47 instr: '(' tCHANGE expr tARROW expr • tWITH expr tDOTS expr ')'
+
+    tWITH  shift, and go to state 246
+
+
+State 225
+
+   66 expr: '(' tGE expr expr ')' •
+
+    $default  reduce using rule 66 (expr)
+
+
+State 226
+
+   67 expr: '(' tLE expr expr ')' •
+
+    $default  reduce using rule 67 (expr)
+
+
+State 227
+
+   69 expr: '(' tEQ expr expr ')' •
+
+    $default  reduce using rule 69 (expr)
+
+
+State 228
+
+   68 expr: '(' tNE expr expr ')' •
+
+    $default  reduce using rule 68 (expr)
+
+
+State 229
+
+   65 expr: '(' '>' expr expr ')' •
+
+    $default  reduce using rule 65 (expr)
+
+
+State 230
+
+   64 expr: '(' '<' expr expr ')' •
+
+    $default  reduce using rule 64 (expr)
+
+
+State 231
+
+   58 expr: '(' '+' expr expr ')' •
+
+    $default  reduce using rule 58 (expr)
+
+
+State 232
+
+   59 expr: '(' '-' expr expr ')' •
+
+    $default  reduce using rule 59 (expr)
+
+
+State 233
+
+   61 expr: '(' '*' expr expr ')' •
+
+    $default  reduce using rule 61 (expr)
+
+
+State 234
+
+   62 expr: '(' '/' expr expr ')' •
+
+    $default  reduce using rule 62 (expr)
+
+
+State 235
+
+   63 expr: '(' '%' expr expr ')' •
+
+    $default  reduce using rule 63 (expr)
+
+
+State 236
+
+   31 declaration: '(' var tIDENTIFIER expr ')' •
+
+    $default  reduce using rule 31 (declaration)
+
+
+State 237
+
+   30 declaration: '(' var_type tIDENTIFIER opt_init ')' •
+
+    $default  reduce using rule 30 (declaration)
+
+
+State 238
+
+   87 fun_type: '(' return_type '(' var_types ')' ')' •
+
+    $default  reduce using rule 87 (fun_type)
+
+
+State 239
+
+   95 arg: '(' var_type • tIDENTIFIER ')'
+
+    tIDENTIFIER  shift, and go to state 247
+
+
+State 240
+
+   81 fundef: '(' tFUNCTION '(' return_type opt_args ')' • block_content ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 35
+
+    $default  reduce using rule 27 (block_content)
+
+    block          go to state 36
+    block_content  go to state 248
+    declarations   go to state 38
+    declaration    go to state 39
+    instrs         go to state 40
+    instr          go to state 41
+    expr           go to state 42
+    fundef         go to state 43
+    literal        go to state 44
+    lval           go to state 45
+
+
+State 241
+
+   94 args: args arg •
+
+    $default  reduce using rule 94 (args)
+
+
+State 242
+
+   37 instr: '(' tIF expr instr instr ')' •
+
+    $default  reduce using rule 37 (instr)
+
+
+State 243
+
+   48 instr: '(' tWITH expr expr expr expr • ')'
+
+    ')'  shift, and go to state 249
+
+
+State 244
+
+   49 instr: '(' tUNLESS expr tFOR expr tDO • expr tAPPLY expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 250
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 245
+
+   50 instr: '(' tSWEEP expr tARROW expr tDOTS • expr tWITH expr tIF expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 251
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 246
+
+   47 instr: '(' tCHANGE expr tARROW expr tWITH • expr tDOTS expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 252
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 247
+
+   95 arg: '(' var_type tIDENTIFIER • ')'
+
+    ')'  shift, and go to state 253
+
+
+State 248
+
+   81 fundef: '(' tFUNCTION '(' return_type opt_args ')' block_content • ')'
+
+    ')'  shift, and go to state 254
+
+
+State 249
+
+   48 instr: '(' tWITH expr expr expr expr ')' •
+
+    $default  reduce using rule 48 (instr)
+
+
+State 250
+
+   49 instr: '(' tUNLESS expr tFOR expr tDO expr • tAPPLY expr ')'
+
+    tAPPLY  shift, and go to state 255
+
+
+State 251
+
+   50 instr: '(' tSWEEP expr tARROW expr tDOTS expr • tWITH expr tIF expr ')'
+
+    tWITH  shift, and go to state 256
+
+
+State 252
+
+   47 instr: '(' tCHANGE expr tARROW expr tWITH expr • tDOTS expr ')'
+
+    tDOTS  shift, and go to state 257
+
+
+State 253
+
+   95 arg: '(' var_type tIDENTIFIER ')' •
+
+    $default  reduce using rule 95 (arg)
+
+
+State 254
+
+   81 fundef: '(' tFUNCTION '(' return_type opt_args ')' block_content ')' •
+
+    $default  reduce using rule 81 (fundef)
+
+
+State 255
+
+   49 instr: '(' tUNLESS expr tFOR expr tDO expr tAPPLY • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 258
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 256
+
+   50 instr: '(' tSWEEP expr tARROW expr tDOTS expr tWITH • expr tIF expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 259
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 257
+
+   47 instr: '(' tCHANGE expr tARROW expr tWITH expr tDOTS • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 260
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 258
+
+   49 instr: '(' tUNLESS expr tFOR expr tDO expr tAPPLY expr • ')'
+
+    ')'  shift, and go to state 261
+
+
+State 259
+
+   50 instr: '(' tSWEEP expr tARROW expr tDOTS expr tWITH expr • tIF expr ')'
+
+    tIF  shift, and go to state 262
+
+
+State 260
+
+   47 instr: '(' tCHANGE expr tARROW expr tWITH expr tDOTS expr • ')'
+
+    ')'  shift, and go to state 263
+
+
+State 261
+
+   49 instr: '(' tUNLESS expr tFOR expr tDO expr tAPPLY expr ')' •
+
+    $default  reduce using rule 49 (instr)
+
+
+State 262
+
+   50 instr: '(' tSWEEP expr tARROW expr tDOTS expr tWITH expr tIF • expr ')'
+
+    tINTEGER     shift, and go to state 26
+    tDOUBLE      shift, and go to state 27
+    tIDENTIFIER  shift, and go to state 34
+    tSTRING      shift, and go to state 28
+    tNULLPTR     shift, and go to state 29
+    '('          shift, and go to state 114
+
+    expr     go to state 264
+    fundef   go to state 43
+    literal  go to state 44
+    lval     go to state 45
+
+
+State 263
+
+   47 instr: '(' tCHANGE expr tARROW expr tWITH expr tDOTS expr ')' •
+
+    $default  reduce using rule 47 (instr)
+
+
+State 264
+
+   50 instr: '(' tSWEEP expr tARROW expr tDOTS expr tWITH expr tIF expr • ')'
+
+    ')'  shift, and go to state 265
+
+
+State 265
+
+   50 instr: '(' tSWEEP expr tARROW expr tDOTS expr tWITH expr tIF expr ')' •
+
+    $default  reduce using rule 50 (instr)
